@@ -1,0 +1,13 @@
+val sampleData=Seq(("bob","Developer",125000),("mark","Developer",108000),("carl","Tester",70000),
+                    ("carlos","Tester",75000),("peter","Developer",185000),
+                    ("eric","Developer",144000),("jon","Tester",65000),("simon","Developer",98000),
+                     ("roman","Tester",82000),("henry","Developer",110000)).
+                   toDF("Name","Role","salary")
+
+sampleData.show()
+
+import org.apche.spark.sql.expressions.Window
+
+val movAvg=sampleData.withColumn("movingAverage",avg(sampleData("Salary")).over(Window.partitionBy("Role").rowsBetween(-1,1)))
+
+movAvg.show()
